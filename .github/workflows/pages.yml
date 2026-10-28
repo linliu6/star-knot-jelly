@@ -1,1 +1,57 @@
-{"name":"Publish Star Knot Jelly","on":{"push":{"branches":["main"],"paths":["star-knot-pages.zip",".github/workflows/pages.yml"]},"workflow_dispatch":{}},"permissions":{"contents":"read","pages":"write","id-token":"write"},"concurrency":{"group":"pages","cancel-in-progress":false},"jobs":{"deploy":{"runs-on":"ubuntu-latest","environment":{"name":"github-pages","url":"${{ steps.deployment.outputs.page_url }}"},"steps":[{"uses":"actions/checkout@v6"},{"uses":"actions/configure-pages@v5"},{"name":"Unpack verified website","run":"unzip -q star-knot-pages.zip -d _site"},{"uses":"actions/upload-pages-artifact@v4","with":{"path":"_site"}},{"name":"Publish website","id":"deployment","uses":"actions/deploy-pages@v4"}]}}}
+{
+  "name": "Publish Jelly Play web and VR",
+  "on": {
+    "push": {
+      "branches": [
+        "main"
+      ],
+      "paths": [
+        "star-knot-pages.zip",
+        "jelly-vr-pages.zip",
+        ".github/workflows/pages.yml"
+      ]
+    },
+    "workflow_dispatch": {}
+  },
+  "permissions": {
+    "contents": "read",
+    "pages": "write",
+    "id-token": "write"
+  },
+  "concurrency": {
+    "group": "pages",
+    "cancel-in-progress": false
+  },
+  "jobs": {
+    "deploy": {
+      "runs-on": "ubuntu-latest",
+      "environment": {
+        "name": "github-pages",
+        "url": "${{ steps.deployment.outputs.page_url }}"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@v6"
+        },
+        {
+          "uses": "actions/configure-pages@v5"
+        },
+        {
+          "name": "Unpack existing web edition and independent VR edition",
+          "run": "unzip -q star-knot-pages.zip -d _site\nunzip -q jelly-vr-pages.zip -d _site/vr"
+        },
+        {
+          "uses": "actions/upload-pages-artifact@v4",
+          "with": {
+            "path": "_site"
+          }
+        },
+        {
+          "name": "Publish website",
+          "id": "deployment",
+          "uses": "actions/deploy-pages@v4"
+        }
+      ]
+    }
+  }
+}
